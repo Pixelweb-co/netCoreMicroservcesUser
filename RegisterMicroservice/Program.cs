@@ -1,4 +1,32 @@
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
+using MongoDB.Driver.Core.Configuration;
+using RegisterMicroservice.DataBaseSettings;
+using RegisterMicroservice.Services;
+using RegisterMicroservice.Models;
+
+
 var builder = WebApplication.CreateBuilder(args);
+
+
+
+//database config
+
+builder.Services.Configure<DatabaseSettingsApp>(builder.Configuration.GetSection("UsersDatabase"));
+
+Console.Clear();
+
+
+Console.WriteLine("mostrando configuracion");
+
+Console.WriteLine(builder.Configuration.GetSection("UsersDatabase").GetValue<String>("UsersCollectionName"));
+
+
+builder.Services.AddSingleton<DatabaseSettingsApp>(d => d.GetRequiredService<IOptions<DatabaseSettingsApp>>().Value);
+
+builder.Services.AddSingleton<UserRegisterMicroservice>();
+
+
 
 // Add services to the container.
 

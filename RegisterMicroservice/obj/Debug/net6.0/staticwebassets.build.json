@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "RzTE1aPoPxsCooJrPDzBS5JNR2fF9BrTETQBZdU0U/U=",
+  "Source": "RegisterMicroservice",
+  "BasePath": "_content/RegisterMicroservice",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
