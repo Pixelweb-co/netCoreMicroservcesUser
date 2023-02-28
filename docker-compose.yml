@@ -1,0 +1,116 @@
+version: '3'
+
+services:
+  myapigateway:
+    build: ./MyApiGateway
+    ports:
+      - "8080:80"
+    depends_on:
+      - searchmicroservice
+      - registermicroservice
+    networks:
+      - mynetwork
+
+  searchmicroservice:
+    build: ./SearchMicroservice
+    ports:
+      - "8081:80"
+    environment:
+      - MONGO_CONNECTION_STRING=mongodb://searchdb1:27017,searchdb2:27017,searchdb3:27017/?replicaSet=rs0
+    depends_on:
+      - searchdb1
+      - searchdb2
+      - searchdb3
+    networks:
+      - mynetwork
+
+  searchdb1:
+    image: mongo
+    restart: always
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=example
+    volumes:
+      - searchdb1:/data/db
+    networks:
+      - mynetwork
+
+  searchdb2:
+    image: mongo
+    restart: always
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=example
+    volumes:
+      - searchdb2:/data/db
+    networks:
+      - mynetwork
+
+  searchdb3:
+    image: mongo
+    restart: always
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=example
+    volumes:
+      - searchdb3:/data/db
+    networks:
+      - mynetwork
+
+  registermicroservice:
+    build: ./RegisterMicroservice
+    ports:
+      - "8082:80"
+    environment:
+      - MONGO_CONNECTION_STRING=mongodb://registerdb1:27017,registerdb2:27017,registerdb3:27017/?replicaSet=rs0
+    depends_on:
+      - registerdb1
+      - registerdb2
+      - registerdb3
+    networks:
+      - mynetwork
+
+  registerdb1:
+    image: mongo
+    restart: always
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=example
+    volumes:
+      - registerdb1:/data/db
+    networks:
+      - mynetwork
+
+  registerdb2:
+    image: mongo
+    restart: always
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=example
+    volumes:
+      - registerdb2:/data/db
+    networks:
+      - mynetwork
+
+  registerdb3:
+    image: mongo
+    restart: always
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=example
+    volumes:
+      - registerdb3:/data/db
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
+    driver: bridge
+
+volumes:
+  searchdb1:
+  searchdb2:
+  searchdb3:
+  registerdb1:
+  registerdb2:
+  registerdb3:
